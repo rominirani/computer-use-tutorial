@@ -4,11 +4,11 @@
 
 ## What This Does
 
-The agent searches the web, reads articles, and **programmatically extracts** structured findings using custom tool functions — then compiles everything into a Markdown report.
+The agent searches the web via DuckDuckGo, reads articles, and **programmatically extracts** structured findings using custom tool functions — then compiles everything into a Markdown report.
 
 | Step | Action | What to Expect |
 |------|--------|----------------|
-| 1 | Opens Google | Browser launches at google.com |
+| 1 | Opens DuckDuckGo | Browser launches at html.duckduckgo.com/html/ |
 | 2 | Searches for the query | Types the search query and presses Enter |
 | 3 | Visits result pages | Clicks on 2-3 search results |
 | 4 | Extracts findings | Calls `save_finding()` with title, URL, key point, category |
@@ -88,19 +88,19 @@ python research_agent.py --max-turns 30
 
 ──────────────────── Turn 1 ────────────────────
   ▶ click(x=500, y=400)
-    → URL: https://www.google.com
+    → URL: https://html.duckduckgo.com/html/
 
 ──────────────────── Turn 2 ────────────────────
   ▶ type(text='quantum computing breakthroughs 2026', press_enter=True)
-    → URL: https://www.google.com/search?q=...
+    → URL: https://html.duckduckgo.com/html/?q=...
 
 ──────────────────── Turn 3 ────────────────────
   ▶ click(x=400, y=280)
     → URL: https://example.com/quantum-article
 
 ──────────────────── Turn 4 ────────────────────
-  ▶ save_finding(title='Google unveils ...', source_url='https://...', ...)
-  📌 Finding #1 saved: Google unveils ... (hardware)
+  ▶ save_finding(title='Major breakthrough ...', source_url='https://...', ...)
+  📌 Finding #1 saved: Major breakthrough ... (hardware)
 
 ... (more turns) ...
 
@@ -112,8 +112,8 @@ python research_agent.py --max-turns 30
 
 ╭──────── Collected Findings (5) ────────╮
 │ # │ Title              │ Category  │ … │
-│ 1 │ Google unveils …   │ hardware  │ … │
-│ 2 │ IBM announces …    │ algorithm │ … │
+│ 1 │ Major breakthrough … │ hardware  │ … │
+│ 2 │ IBM announces …      │ algorithm │ … │
 │ 3 │ …                  │ …         │ … │
 ╰────────────────────────────────────────╯
 ```
@@ -131,12 +131,12 @@ The script saves a Markdown file like this:
 
 ---
 
-## Finding 1: Google Unveils New Quantum Processor
+## Finding 1: Major Quantum Processor Breakthrough
 **Source:** https://example.com/article
 **Category:** hardware
 **Collected:** 2026-06-26T14:28:15
 
-Google announced a new 1000-qubit processor that achieves ...
+Researchers announced a new 1000-qubit processor that achieves ...
 
 ---
 

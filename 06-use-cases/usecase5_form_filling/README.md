@@ -4,7 +4,7 @@
 
 ## What This Does
 
-The agent navigates to [practice_form.html](practice_form.html (local file)) and fills in a complex form that includes multiple input types:
+The agent navigates to [practice_form.html](practice_form.html) and fills in a complex form that includes multiple input types:
 
 | Step | Action | Input Type Demonstrated |
 |------|--------|------------------------|
@@ -13,13 +13,15 @@ The agent navigates to [practice_form.html](practice_form.html (local file)) and
 | 3 | Fills Last Name → `Smith` | Text input |
 | 4 | Fills Email → `jane.smith@example.com` | Email input |
 | 5 | Selects Gender → `Female` | **Radio button** |
-| 6 | Fills Mobile → `1234567890` | Number input |
-| 7 | Enters Subject → `Computer Science` | Autocomplete/dropdown |
-| 8 | Selects Hobby → `Reading` | **Checkbox** |
-| 9 | Fills Address → `123 AI Street, Tech City` | **Text area** |
-| 10 | Clicks **Submit** | Button click |
-| 11 | Verifies confirmation modal | Visual verification |
-| 12 | Reports results | Summary output |
+| 6 | Fills Mobile → `555-0123` | Number input |
+| 7 | Selects State → `California` | Dropdown |
+| 8 | Fills City → `San Francisco` | Text input |
+| 9 | Enters Subject → `Computer Science` | Autocomplete/dropdown |
+| 10 | Selects Hobby → `Reading` | **Checkbox** |
+| 11 | Fills Address → `123 AI Street, Tech City` | **Text area** |
+| 12 | Clicks **Submit** | Button click |
+| 13 | Verifies confirmation modal | Visual verification |
+| 14 | Reports results | Summary output |
 
 ## Why This Use Case Matters
 
@@ -46,7 +48,8 @@ Gemini Computer Use handles all of these through **visual understanding** — it
                                                         │
                                                 ┌───────▼────────┐
                                                 │   Chromium     │
-                                                │   the local practice form   │
+                                                │ practice_form  │
+                                                │    .html       │
                                                 └────────────────┘
 ```
 
@@ -81,7 +84,7 @@ python form_agent.py --max-turns 30
 ```
 ╔══════════════════════════════════════════════════╗
 ║ Use Case 5 — Automated Form Filling Agent       ║
-║ Target: practice_form.html (local file) ║
+║ Target: practice_form.html                    ║
 ╚══════════════════════════════════════════════════╝
 
 ┌─────────── Form Data to Fill ───────────┐
@@ -91,7 +94,9 @@ python form_agent.py --max-turns 30
 │ Last Name      │ Smith                   │
 │ Email          │ jane.smith@example.com  │
 │ Gender         │ Female                  │
-│ Mobile         │ 1234567890              │
+│ Mobile         │ 555-0123                │
+│ State          │ California              │
+│ City           │ San Francisco           │
 │ Subjects       │ Computer Science        │
 │ Hobbies        │ Reading                 │
 │ Address        │ 123 AI Street, Tech City│
@@ -103,14 +108,14 @@ Step 1 → Launching Chromium browser …
 ✓ Browser ready
 
 Step 2 → Navigating to practice form …
-  URL: practice_form.html (local file)
+  URL: practice_form.html
   Screenshot: 198,432 bytes
 
 ──────────────────── Turn 1 ────────────────────
   ▶ click(x=350, y=220)         # clicks First Name field
-    → practice_form.html (local file)
+    → practice_form.html
   ▶ type(text='Jane')
-    → practice_form.html (local file)
+    → practice_form.html
 
 ──────────────────── Turn 2 ────────────────────
   ▶ click(x=650, y=220)         # clicks Last Name field
@@ -132,7 +137,9 @@ Step 2 → Navigating to practice form …
 │ ✓ Last Name: Smith                   │
 │ ✓ Email: jane.smith@example.com      │
 │ ✓ Gender: Female (radio)             │
-│ ✓ Mobile: 1234567890                 │
+│ ✓ Mobile: 555-0123                   │
+│ ✓ State: California                  │
+│ ✓ City: San Francisco                │
 │ ✓ Subject: Computer Science          │
 │ ✓ Hobby: Reading (checkbox)          │
 │ ✓ Address: 123 AI Street, Tech City  │
@@ -146,7 +153,7 @@ Step 2 → Navigating to practice form …
 ┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Metric      ┃ Value                                    ┃
 ┡━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ Target URL  │ practice_form.html (local file)│
+│ Target URL  │ practice_form.html                       │
 │ Total turns │ 10                                       │
 │ Model       │ gemini-3.5-flash                         │
 │ API         │ generateContent (browser)                │
@@ -174,5 +181,5 @@ Step 2 → Navigating to practice form …
 | Subject autocomplete doesn't work | Agent types text then presses Enter to confirm |
 | Submit button not visible | Agent needs to scroll down before clicking |
 | Modal doesn't appear | Check if all required fields were filled (email, mobile) |
-| `Page.goto: Timeout 30000ms exceeded` | the local practice form can be slow. The script uses a 60-second timeout with `domcontentloaded` wait. If it persists, check your internet connection or try again later. |
+| `Page.goto: Timeout 30000ms exceeded` | The script uses a 60-second timeout with `domcontentloaded` wait. Ensure the local file path is correct and the form HTML file exists in the expected directory. |
 | Agent takes 25-35 turns | This is normal — forms with many diverse input types require many individual actions (focus field, type, move to next) |

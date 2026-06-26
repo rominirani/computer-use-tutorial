@@ -339,7 +339,7 @@ def run_research_agent(
       • Findings are accumulated in a Python list and compiled into a
         Markdown report file — demonstrating how Computer Use bridges
         the gap between visual web browsing and structured output.
-      • The model navigates Google, visits result pages, reads content
+      • The model navigates DuckDuckGo, visits result pages, reads content
         visually from screenshots, and decides what's worth saving.
     ──────────────────────────────────────────────────────────────────
     """

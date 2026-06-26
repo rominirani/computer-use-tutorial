@@ -97,7 +97,7 @@ python -m playwright install chromium
 
 ```bash
 export GCP_PROJECT_ID="your-project-id"
-export GCP_LOCATION="us-central1"    # optional, this is the default
+export GCP_LOCATION="global"          # optional, this is the default
 ```
 
 ## Architecture
@@ -203,9 +203,9 @@ python enterprise_agent.py --approach managed-sandbox \
 
   Approach : self-managed
   Project  : my-gcp-project
-  Location : us-central1
+  Location : global
   Model    : gemini-3.5-flash
-  Task     : Navigate to https://cloud.google.com/vertex-ai and tell me...
+  Task     : Navigate to https://news.ycombinator.com and tell me...
 
 ════════════════════════════════════════════════════════════════
   APPROACH 1 — VERTEX AI + SELF-MANAGED BROWSER
@@ -231,11 +231,11 @@ python enterprise_agent.py --approach managed-sandbox \
 ────────────────────────────────────────────────────────
 
   ── Turn 1 ──
-    → navigate(url=https://cloud.google.com/vertex-ai)
+    → navigate(url=https://news.ycombinator.com)
   ── Turn 2 ──
     → scroll(x=500, y=500, direction=down, magnitude=400)
   ── Turn 3 ──
-  ✓ Agent finished: The three main product categories...
+  ✓ Agent finished: The top 3 stories on Hacker News are...
 
 ════════════════════════════════════════════════════════════════
   SESSION SUMMARY
@@ -246,8 +246,8 @@ python enterprise_agent.py --approach managed-sandbox \
   Status   : ✓ Completed
 
   Final Answer:
-    The three main product categories listed on the
-    Vertex AI page are...
+    The top 3 stories currently on the Hacker News
+    front page are...
 ```
 
 ## Key Concepts
@@ -265,7 +265,7 @@ client = genai.Client(api_key="AIza...")
 client = genai.Client(
     vertexai=True,
     project="my-project",
-    location="us-central1",
+    location="global",
 )
 ```
 

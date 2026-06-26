@@ -10,7 +10,7 @@ browser-driving actions (click, type, scroll, navigate) with custom
 structured-data functions (save_product) in a single conversation.
 
 The agent:
-  1. Opens Google Shopping
+  1. Opens Amazon
   2. Searches for 'wireless noise cancelling headphones'
   3. Extracts product names and prices from the results
   4. Calls `save_product()` to store each finding
@@ -288,7 +288,7 @@ def save_product(name: str, price: str, source: str) -> dict:
     Args:
         name: The product name (e.g. 'Sony WH-1000XM5').
         price: The price as displayed (e.g. '$278.00').
-        source: Where the data was found (e.g. 'Google Shopping').
+        source: Where the data was found (e.g. 'Amazon').
 
     Returns:
         Confirmation dict with save status and running total.
@@ -659,7 +659,7 @@ def print_comparison_table(products: list[dict]) -> None:
         console.print(
             Panel(
                 "[yellow]No products were saved by the agent.\n"
-                "This can happen if Google Shopping blocked automated access\n"
+                "This can happen if Amazon blocked automated access\n"
                 "or the page layout didn't match what the model expected.\n\n"
                 "Try running again — the model may take a different path.[/yellow]",
                 title="⚠ No Results",

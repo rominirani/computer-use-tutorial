@@ -69,7 +69,7 @@ config = GenerateContentConfig(
 ```
 
 The model naturally interleaves these tools:
-1. `navigate(url="shopping.google.com")` → browser action
+1. `navigate(url="www.amazon.com")` → browser action
 2. `type(text="wireless noise cancelling headphones")` → browser action
 3. `click(x=700, y=400)` → browser action
 4. `save_product(name="Sony WH-1000XM5", price="$278", source="Amazon")` → custom function
@@ -82,7 +82,7 @@ The model naturally interleaves these tools:
 - Checks `GEMINI_API_KEY`
 
 ### Step 2: Browser Launch
-- Starts headless Chromium at `https://shopping.google.com/`
+- Starts headless Chromium at `https://www.amazon.com/`
 - Captures initial screenshot
 
 ### Step 3: Agent Initialization

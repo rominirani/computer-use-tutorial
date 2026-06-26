@@ -26,7 +26,7 @@ Prerequisites:
 
     # Environment variables
     export GCP_PROJECT_ID="your-project-id"
-    export GCP_LOCATION="us-central1"         # optional, defaults shown
+    export GCP_LOCATION="global"               # optional, defaults shown
 
 Usage:
     # Approach 1 — self-managed browser

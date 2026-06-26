@@ -62,7 +62,7 @@ This repository contains **5 progressive tutorial steps** and **5 real-world use
 | Directory | Scenario | Key Pattern |
 |---|---|---|
 | [`06-use-cases/usecase1_qa_testing/`](06-use-cases/usecase1_qa_testing/) | QA test a TodoMVC app | Computer Use + custom `report_qa_result` function |
-| [`06-use-cases/usecase2_price_comparison/`](06-use-cases/usecase2_price_comparison/) | Compare product prices on Google Shopping | Multi-tool composition (`save_product`) |
+| [`06-use-cases/usecase2_price_comparison/`](06-use-cases/usecase2_price_comparison/) | Compare product prices on Amazon | Multi-tool composition (`save_product`) |
 | [`06-use-cases/usecase3_mobile_testing/`](06-use-cases/usecase3_mobile_testing/) | Toggle dark mode and read Android version | Interactions API + mobile environment |
 | [`06-use-cases/usecase4_web_research/`](06-use-cases/usecase4_web_research/) | Research a topic and generate a Markdown report | Dual custom functions (`save_finding` + `generate_report`) |
 | [`06-use-cases/usecase5_form_filling/`](06-use-cases/usecase5_form_filling/) | Fill a complex HTML form (radio, checkbox, autocomplete) | ACTION_DISPATCH table pattern |
