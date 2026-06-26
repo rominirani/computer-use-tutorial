@@ -420,6 +420,8 @@
   <aside class="sidebar">
     <div class="sidebar-logo">📖 Gemini Computer Use</div>
     <nav id="toc">
+      <a href="#brain-eyes-hands">Brain, Eyes &amp; Hands</a>
+      <div class="sep"></div>
       <a href="#part-1">Part 1: What is Computer Use?</a>
       <a href="#part-2">Part 2: Two Paths</a>
       <a href="#part-3">Part 3: Prerequisites &amp; Setup</a>
@@ -459,6 +461,63 @@
         <strong>TL;DR</strong> — Gemini Computer Use lets you build AI agents that control real screens by looking at screenshots and deciding what to click, type, or scroll — just like a human would. This tutorial walks you through five progressive steps (from "Hello Screenshot" to a full enterprise platform), then shows five real-world use cases. All code is included and runnable.
       </div>
     </div>
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- BRAIN, EYES & HANDS -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="brain-eyes-hands">How Computer Use Works: Brain, Eyes, and Hands</h2>
+
+    <p>Every Computer Use agent has three parts:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Role</th><th>What It Does</th><th>Who Provides It</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🧠 <strong>Brain</strong></td>
+            <td>Looks at the screen, decides what to do next, returns a structured action like <code>click(x=396, y=185)</code></td>
+            <td><strong>Gemini 3.5 Flash</strong> — the model</td>
+          </tr>
+          <tr>
+            <td>👁️ <strong>Eyes</strong></td>
+            <td>Captures a screenshot of the current screen and sends it to the Brain</td>
+            <td><strong>Your code</strong> — <code>page.screenshot()</code> or <code>adb screencap</code></td>
+          </tr>
+          <tr>
+            <td>🖐️ <strong>Hands</strong></td>
+            <td>Executes the Brain's action on the actual screen (click, type, scroll, tap)</td>
+            <td><strong>Playwright</strong> (browser), <strong>ADB</strong> (mobile), or <strong>CDP</strong> (enterprise sandbox)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The Brain is always the same — Gemini 3.5 Flash. But the <strong>Hands change</strong> depending on what you're controlling:</p>
+
+    <div class="diagram">
+<pre style="text-align:left;display:inline-block;margin:0;">
+┌─────────────────────────────────────────────────────────────────┐
+│                    🧠 BRAIN (always the same)                   │
+│                      Gemini 3.5 Flash                           │
+│           "Look at this screenshot, what should I do?"          │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+              Model returns: click(x=396, y=185)
+                           │
+          ┌────────────────┼────────────────┐
+          ▼                ▼                ▼
+   🖐️ Browser        🖐️ Mobile       🖐️ Enterprise
+   Playwright         ADB              CDP Sandbox
+   page.mouse         adb shell        Remote browser
+   .click(506,148)    input tap        in the cloud
+                      506 148
+</pre>
+    </div>
+
+    <p><strong>Why this matters:</strong> The model doesn't know or care what "hands" you're using. It just sees screenshots and returns actions. You can swap Playwright for Selenium, ADB for a physical device, or a local browser for a cloud sandbox — the model's output is identical. The only thing that changes is the <code>environment</code> parameter you declare (<code>browser</code>, <code>mobile</code>, or <code>desktop</code>), which tells the model what <em>kind</em> of screen it's looking at.</p>
+
 
     <!-- ════════════════════════════════════════════════════════ -->
     <!-- PART 1 -->
