@@ -4,13 +4,13 @@
 Use Case 4 — Web Research & Report Agent
 =============================================================================
 Demonstrates **Computer Use + Custom Function Calling** to perform structured
-web research.  The agent browses Google, visits search results, and calls
+web research.  The agent browses DuckDuckGo, visits search results, and calls
 custom ``save_finding`` / ``generate_report`` functions so findings are stored
 programmatically rather than as free-form text.
 
 Workflow
 --------
-1. Open Google and search for "quantum computing breakthroughs 2026"
+1. Open DuckDuckGo and search for "quantum computing breakthroughs 2026"
 2. Visit the first 2-3 search results
 3. For each page, call ``save_finding(title, source_url, key_point, category)``
 4. When done, call ``generate_report()`` to signal completion
@@ -181,7 +181,7 @@ class BrowserSession:
         self._page = ctx.new_page()
         # Redirect new-tab navigations into the current tab
         ctx.on("page", self._redirect_new_tab)
-        self._page.goto("https://www.google.com")
+        self._page.goto("https://html.duckduckgo.com/html/")
         console.print("[green]✓[/green] Chromium launched\n")
 
     def stop(self):
@@ -406,7 +406,7 @@ def run_research_agent(
     system_text = f"""\
 You are a web research assistant.  Your job:
 
-1. The browser is open to Google.  Search for: "{search_query}"
+1. The browser is open to DuckDuckGo.  Search for: "{search_query}"
 2. Browse the first 2-3 search result pages.
 3. On each page, extract **key findings** and call the ``save_finding`` tool
    for each distinct insight (with a descriptive title, the page URL, the
@@ -420,6 +420,7 @@ Rules:
 * You MUST call ``save_finding`` at least once per page visited.
 * Call ``generate_report`` exactly once when finished.
 * Navigate with clicks and scrolls — read the page content on screen.
+* If a page fails to load, use the browser back button and try the next result.
 """
 
     # -- Launch browser -----------------------------------------------------
@@ -713,7 +714,7 @@ def _write_report(search_query: str) -> str:
         "## Methodology",
         "",
         "This report was generated automatically by the Web Research & Report Agent.",
-        f'The agent searched Google for "{search_query}", visited the top results,',
+        f'The agent searched DuckDuckGo for "{search_query}", visited the top results,',
         "and used the `save_finding` tool to programmatically extract key insights.",
         "",
     ])
