@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Registration Form — Computer Use Tutorial</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f5f7; color: #333; padding: 2rem; }
+        .container { max-width: 720px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 2.5rem; }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #1a73e8; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; font-weight: 500; margin-bottom: 0.35rem; font-size: 0.9rem; }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select {
+            width: 100%; padding: 0.6rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        input:focus, textarea:focus, select:focus { border-color: #1a73e8; outline: none; box-shadow: 0 0 0 2px rgba(26,115,232,0.15); }
+        .row { display: flex; gap: 1rem; }
+        .row .form-group { flex: 1; }
+        .radio-group, .checkbox-group { display: flex; gap: 1.5rem; align-items: center; margin-top: 0.35rem; }
+        .radio-group label, .checkbox-group label { font-weight: 400; display: flex; align-items: center; gap: 0.35rem; cursor: pointer; }
+        textarea { resize: vertical; min-height: 80px; }
+        button[type="submit"] {
+            background: #1a73e8; color: #fff; border: none; padding: 0.75rem 2rem; border-radius: 6px;
+            font-size: 1rem; font-weight: 500; cursor: pointer; margin-top: 1rem; transition: background 0.2s;
+        }
+        button[type="submit"]:hover { background: #1557b0; }
+        .success-message { display: none; background: #e6f4ea; border: 1px solid #34a853; color: #137333; padding: 1.25rem; border-radius: 8px; margin-top: 1.5rem; }
+        .success-message h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .success-message .summary { font-size: 0.9rem; line-height: 1.6; }
+        .required { color: #d93025; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Student Registration Form</h1>
+        <p class="subtitle">Practice form for Gemini Computer Use — Fill in all fields and submit.</p>
+
+        <form id="registrationForm" onsubmit="return handleSubmit(event)">
+            <div class="row">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstName" placeholder="e.g. Jane" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastName" placeholder="e.g. Smith" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" placeholder="e.g. jane.smith@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Gender <span class="required">*</span></label>
+                <div class="radio-group">
+                    <label><input type="radio" name="gender" value="Male" required> Male</label>
+                    <label><input type="radio" name="gender" value="Female"> Female</label>
+                    <label><input type="radio" name="gender" value="Other"> Other</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" placeholder="e.g. 555-0123">
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" name="subject">
+                    <option value="">-- Select a subject --</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Physics">Physics</option>
+                    <option value="English">English</option>
+                    <option value="History">History</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Hobbies</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="hobbies" value="Sports"> Sports</label>
+                    <label><input type="checkbox" name="hobbies" value="Reading"> Reading</label>
+                    <label><input type="checkbox" name="hobbies" value="Music"> Music</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Current Address</label>
+                <textarea id="address" name="address" placeholder="e.g. 123 Main Street, Anytown, CA 90210"></textarea>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <select id="state" name="state">
+                        <option value="">-- Select state --</option>
+                        <option value="California">California</option>
+                        <option value="New York">New York</option>
+                        <option value="Texas">Texas</option>
+                        <option value="Florida">Florida</option>
+                        <option value="Washington">Washington</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <select id="city" name="city">
+                        <option value="">-- Select city --</option>
+                        <option value="San Francisco">San Francisco</option>
+                        <option value="Los Angeles">Los Angeles</option>
+                        <option value="New York City">New York City</option>
+                        <option value="Austin">Austin</option>
+                        <option value="Seattle">Seattle</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">Submit Registration</button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+            <h2>✅ Registration Submitted Successfully!</h2>
+            <div class="summary" id="submissionSummary"></div>
+        </div>
+    </div>
+
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            const form = document.getElementById('registrationForm');
+            const data = new FormData(form);
+            const hobbies = data.getAll('hobbies').join(', ') || 'None selected';
+            const summary = `
+                <br><strong>Name:</strong> ${data.get('firstName')} ${data.get('lastName')}
+                <br><strong>Email:</strong> ${data.get('email')}
+                <br><strong>Gender:</strong> ${data.get('gender')}
+                <br><strong>Mobile:</strong> ${data.get('mobile') || 'Not provided'}
+                <br><strong>Date of Birth:</strong> ${data.get('dob') || 'Not provided'}
+                <br><strong>Subject:</strong> ${data.get('subject') || 'Not selected'}
+                <br><strong>Hobbies:</strong> ${hobbies}
+                <br><strong>Address:</strong> ${data.get('address') || 'Not provided'}
+                <br><strong>State:</strong> ${data.get('state') || 'Not selected'}
+                <br><strong>City:</strong> ${data.get('city') || 'Not selected'}
+            `;
+            document.getElementById('submissionSummary').innerHTML = summary;
+            document.getElementById('successMessage').style.display = 'block';
+            form.style.display = 'none';
+            return false;
+        }
+    </script>
+</body>
+</html>

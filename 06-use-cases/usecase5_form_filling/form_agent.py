@@ -6,7 +6,7 @@ Use Case 5 — Automated Form Filling Agent
 Demonstrates how Gemini Computer Use can handle diverse HTML form controls:
 text inputs, radio buttons, checkboxes, dropdowns, and text areas.
 
-Target form: https://demoqa.com/automation-practice-form
+Target form: practice_form.html (local file shipped with this tutorial)
 
 Workflow
 --------
@@ -68,7 +68,11 @@ from playwright.sync_api import sync_playwright
 # Config
 # ---------------------------------------------------------------------------
 MODEL_NAME = "gemini-3.5-flash"
-FORM_URL = "https://demoqa.com/automation-practice-form"
+# Use the local practice form that ships with this tutorial.
+# demoqa.com was unreliable (broken SPA), so we host our own.
+FORM_URL = "file://" + os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "practice_form.html"
+)
 VIEWPORT_WIDTH = 1280
 VIEWPORT_HEIGHT = 900
 
@@ -82,10 +86,12 @@ FORM_DATA = {
     "last_name": "Smith",
     "email": "jane.smith@example.com",
     "gender": "Female",
-    "mobile": "1234567890",
-    "subjects": "Computer Science",
+    "mobile": "555-0123",
+    "subject": "Computer Science",
     "hobbies": "Reading",
-    "address": "123 AI Street, Tech City",
+    "address": "123 AI Street, Tech City, CA 90210",
+    "state": "California",
+    "city": "San Francisco",
 }
 
 # ---------------------------------------------------------------------------
@@ -422,7 +428,7 @@ def run_form_agent(headless: bool = False, max_turns: int = 50) -> dict:
     # the screenshot.
     system_text = f"""\
 You are a form-filling automation agent.  A browser is open to a practice
-form at {FORM_URL}.
+registration form.
 
 Fill in the form with EXACTLY these values:
   • First Name: {FORM_DATA['first_name']}
@@ -430,22 +436,25 @@ Fill in the form with EXACTLY these values:
   • Email:      {FORM_DATA['email']}
   • Gender:     {FORM_DATA['gender']}  (click the radio button)
   • Mobile:     {FORM_DATA['mobile']}
-  • Subjects:   {FORM_DATA['subjects']}
+  • Date of Birth: 1995-06-15
+  • Subject:    {FORM_DATA['subject']}  (select from the dropdown)
   • Hobbies:    {FORM_DATA['hobbies']}  (click the checkbox)
   • Current Address: {FORM_DATA['address']}
+  • State:      {FORM_DATA['state']}  (select from the dropdown)
+  • City:       {FORM_DATA['city']}  (select from the dropdown)
 
-After filling every field, scroll down to find and click the **Submit** button.
-Then check whether a confirmation modal/dialog appears.
+After filling every field, scroll down to find and click the **Submit Registration** button.
+Then check whether a success confirmation message appears.
 
 Finally, report:
 1. Which fields you successfully filled.
-2. Whether the form was submitted successfully (modal appeared).
+2. Whether the form was submitted successfully (confirmation appeared).
 
 Tips:
 * Scroll down if fields are below the fold.
-* For the "Subjects" field, type the text then press Enter or select from the dropdown.
-* The Gender and Hobbies inputs are radio/checkbox — click the label text.
-* The page may have ads — ignore them.
+* The Gender inputs are radio buttons — click the label text.
+* The Hobbies inputs are checkboxes — click the label text.
+* For dropdowns (Subject, State, City), click to open and select the correct option.
 """
 
     # -- Launch browser & navigate ------------------------------------------

@@ -4,7 +4,7 @@
 
 ## What This Does
 
-The agent navigates to [demoqa.com/automation-practice-form](https://demoqa.com/automation-practice-form) and fills in a complex form that includes multiple input types:
+The agent navigates to [practice_form.html](practice_form.html (local file)) and fills in a complex form that includes multiple input types:
 
 | Step | Action | Input Type Demonstrated |
 |------|--------|------------------------|
@@ -46,7 +46,7 @@ Gemini Computer Use handles all of these through **visual understanding** — it
                                                         │
                                                 ┌───────▼────────┐
                                                 │   Chromium     │
-                                                │   demoqa.com   │
+                                                │   the local practice form   │
                                                 └────────────────┘
 ```
 
@@ -81,7 +81,7 @@ python form_agent.py --max-turns 30
 ```
 ╔══════════════════════════════════════════════════╗
 ║ Use Case 5 — Automated Form Filling Agent       ║
-║ Target: https://demoqa.com/automation-practice-form ║
+║ Target: practice_form.html (local file) ║
 ╚══════════════════════════════════════════════════╝
 
 ┌─────────── Form Data to Fill ───────────┐
@@ -103,14 +103,14 @@ Step 1 → Launching Chromium browser …
 ✓ Browser ready
 
 Step 2 → Navigating to practice form …
-  URL: https://demoqa.com/automation-practice-form
+  URL: practice_form.html (local file)
   Screenshot: 198,432 bytes
 
 ──────────────────── Turn 1 ────────────────────
   ▶ click(x=350, y=220)         # clicks First Name field
-    → https://demoqa.com/automation-practice-form
+    → practice_form.html (local file)
   ▶ type(text='Jane')
-    → https://demoqa.com/automation-practice-form
+    → practice_form.html (local file)
 
 ──────────────────── Turn 2 ────────────────────
   ▶ click(x=650, y=220)         # clicks Last Name field
@@ -146,7 +146,7 @@ Step 2 → Navigating to practice form …
 ┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Metric      ┃ Value                                    ┃
 ┡━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ Target URL  │ https://demoqa.com/automation-practice-form│
+│ Target URL  │ practice_form.html (local file)│
 │ Total turns │ 10                                       │
 │ Model       │ gemini-3.5-flash                         │
 │ API         │ generateContent (browser)                │
@@ -174,5 +174,5 @@ Step 2 → Navigating to practice form …
 | Subject autocomplete doesn't work | Agent types text then presses Enter to confirm |
 | Submit button not visible | Agent needs to scroll down before clicking |
 | Modal doesn't appear | Check if all required fields were filled (email, mobile) |
-| `Page.goto: Timeout 30000ms exceeded` | demoqa.com can be slow. The script uses a 60-second timeout with `domcontentloaded` wait. If it persists, check your internet connection or try again later. |
+| `Page.goto: Timeout 30000ms exceeded` | the local practice form can be slow. The script uses a 60-second timeout with `domcontentloaded` wait. If it persists, check your internet connection or try again later. |
 | Agent takes 25-35 turns | This is normal — forms with many diverse input types require many individual actions (focus field, type, move to next) |
