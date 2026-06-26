@@ -167,7 +167,7 @@ class FormBrowser:
     # -- actions the model can invoke ---------------------------------------
 
     def navigate(self, url: str) -> tuple[bytes, str]:
-        if not url.startswith(("http://", "https://")):
+        if not url.startswith(("http://", "https://", "file://")):
             url = "https://" + url
         self._page.goto(url, timeout=60000, wait_until="domcontentloaded")
         self._page.wait_for_load_state("domcontentloaded")
