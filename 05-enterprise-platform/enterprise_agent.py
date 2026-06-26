@@ -80,8 +80,8 @@ MODEL = "gemini-3.5-flash"
 
 # Default task if none is provided via CLI.
 DEFAULT_TASK = (
-    "Navigate to https://cloud.google.com/vertex-ai and tell me the "
-    "three main product categories listed on the page."
+    "Navigate to https://news.ycombinator.com and tell me the top 3 stories "
+    "currently on the front page, including their titles and point counts."
 )
 
 # Maximum agent turns before we force-stop to prevent runaway loops.
