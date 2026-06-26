@@ -68,7 +68,7 @@ from playwright.sync_api import sync_playwright, Page
 # For a real deployment, pull them from Secret Manager or a config file.
 
 PROJECT_ID = os.environ.get("GCP_PROJECT_ID", "YOUR_PROJECT_ID")
-LOCATION = os.environ.get("GCP_LOCATION", "us-central1")
+LOCATION = os.environ.get("GCP_LOCATION", "global")
 
 # Browser dimensions — the model will receive screenshots at this size
 # and its normalised 0-999 coordinates will be mapped against these.

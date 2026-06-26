@@ -4,3 +4,4 @@ pydantic>=2.0
 rich
 termcolor
 python-dotenv
+pyopenssl
