@@ -698,7 +698,7 @@ extract pricing information.
 
 ## Instructions
 
-1. You are on Google Shopping. In the search box, type "wireless noise
+1. You are on Amazon.com. In the search box, type "wireless noise
    cancelling headphones" and press Enter to search.
 
 2. Wait for results to load. You should see product listings with names
@@ -708,7 +708,7 @@ extract pricing information.
    see, call the `save_product` function with:
    - name: the product name (e.g. "Sony WH-1000XM5")
    - price: the displayed price (e.g. "$278.00")
-   - source: "Google Shopping"
+   - source: "Amazon"
 
 4. If you need to scroll down to see more products, do so.
 
@@ -762,10 +762,10 @@ def main() -> None:
     step_banner(
         2,
         "Launch browser",
-        "Opening Google Shopping",
+        "Opening Amazon",
     )
 
-    start_url = "https://shopping.google.com/"
+    start_url = "https://www.amazon.com/"
 
     # Clear any leftover product data from previous runs
     product_findings.clear()

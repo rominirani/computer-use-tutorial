@@ -72,9 +72,9 @@ The model naturally interleaves these tools:
 1. `navigate(url="shopping.google.com")` → browser action
 2. `type(text="wireless noise cancelling headphones")` → browser action
 3. `click(x=700, y=400)` → browser action
-4. `save_product(name="Sony WH-1000XM5", price="$278", source="Google Shopping")` → custom function
+4. `save_product(name="Sony WH-1000XM5", price="$278", source="Amazon")` → custom function
 5. `scroll(direction="down")` → browser action
-6. `save_product(name="Bose QC Ultra", price="$329", source="Google Shopping")` → custom function
+6. `save_product(name="Bose QC Ultra", price="$329", source="Amazon")` → custom function
 
 ## What Happens Step-by-Step
 
@@ -91,7 +91,7 @@ The model naturally interleaves these tools:
 
 ### Step 4: Autonomous Search & Extraction
 The agent loop runs:
-1. Model sees the Google Shopping page
+1. Model sees the Amazon page
 2. Finds the search box, types "wireless noise cancelling headphones", presses Enter
 3. Waits for results to load
 4. Reads product names and prices from the screenshot
@@ -106,10 +106,10 @@ Renders a rich-formatted table:
 ┌────────────────────────────────┬─────────────┬──────────────────┐
 │ Product                        │       Price │ Source           │
 ├────────────────────────────────┼─────────────┼──────────────────┤
-│ Sony WH-1000XM5                │     $278.00 │ Google Shopping  │
-│ Bose QuietComfort Ultra        │     $329.00 │ Google Shopping  │
-│ Apple AirPods Max              │     $449.00 │ Google Shopping  │
-│ Sennheiser Momentum 4          │     $299.95 │ Google Shopping  │
+│ Sony WH-1000XM5                │     $278.00 │ Amazon  │
+│ Bose QuietComfort Ultra        │     $329.00 │ Amazon  │
+│ Apple AirPods Max              │     $449.00 │ Amazon  │
+│ Sennheiser Momentum 4          │     $299.95 │ Amazon  │
 └────────────────────────────────┴─────────────┴──────────────────┘
 
   📊 Total products found: 4
@@ -159,11 +159,11 @@ PLAYWRIGHT_HEADLESS= python 06-use-cases/usecase2_price_comparison/price_agent.p
   ▶  type(text=wireless noise cancelling headphones, press_enter=True)
      📸 Screenshot (186 KB)
 
-  ▶  save_product(name=Sony WH-1000XM5, price=$278.00, source=Google Shopping)
-     💾 Saved: Sony WH-1000XM5 — $278.00 (Google Shopping)
+  ▶  save_product(name=Sony WH-1000XM5, price=$278.00, source=Amazon)
+     💾 Saved: Sony WH-1000XM5 — $278.00 (Amazon)
 
-  ▶  save_product(name=Bose QuietComfort Ultra, price=$329.00, source=Google Shopping)
-     💾 Saved: Bose QuietComfort Ultra — $329.00 (Google Shopping)
+  ▶  save_product(name=Bose QuietComfort Ultra, price=$329.00, source=Amazon)
+     💾 Saved: Bose QuietComfort Ultra — $329.00 (Amazon)
 
   ...
 
@@ -171,8 +171,8 @@ PLAYWRIGHT_HEADLESS= python 06-use-cases/usecase2_price_comparison/price_agent.p
 ┌────────────────────────────────┬─────────────┬──────────────────┐
 │ Product                        │       Price │ Source           │
 ├────────────────────────────────┼─────────────┼──────────────────┤
-│ Sony WH-1000XM5                │     $278.00 │ Google Shopping  │
-│ Bose QuietComfort Ultra        │     $329.00 │ Google Shopping  │
+│ Sony WH-1000XM5                │     $278.00 │ Amazon  │
+│ Bose QuietComfort Ultra        │     $329.00 │ Amazon  │
 │ ...                            │             │                  │
 └────────────────────────────────┴─────────────┴──────────────────┘
 
@@ -193,12 +193,12 @@ PLAYWRIGHT_HEADLESS= python 06-use-cases/usecase2_price_comparison/price_agent.p
    "browse + extract" workflow: competitor monitoring, lead generation,
    content aggregation, etc.
 
-4. **Graceful degradation** — The script handles cases where Google Shopping
+4. **Graceful degradation** — The script handles cases where Amazon
    may block automated access by showing a helpful message rather than crashing.
 
-## Notes on Google Shopping
+## Notes on Amazon
 
-Google Shopping may occasionally show CAPTCHAs or different layouts for
+Amazon may occasionally show CAPTCHAs or different layouts for
 automated browsers. If the agent struggles:
 - Try running again (different session)
 - Try with `PLAYWRIGHT_HEADLESS=` to watch and debug
