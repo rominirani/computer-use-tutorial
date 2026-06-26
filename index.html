@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastering Gemini Computer Use — A Comprehensive Hands-On Guide</title>
+  <meta name="description" content="Build AI agents that can see, understand, and interact with any screen — browsers, mobile devices, and desktops. A step-by-step tutorial using Gemini 3.5 Flash.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Highlight.js for code syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+
+  <style>
+    /* ── Reset & Base ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.72;
+      color: #1a1a2e;
+      background: #fdfdfe;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ─────────────────────────────────────────── */
+    .wrapper {
+      display: flex;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    /* ── Sidebar / TOC ─────────────────────────────────── */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 280px;
+      min-width: 280px;
+      overflow-y: auto;
+      padding: 2rem 1.25rem 2rem 1.5rem;
+      border-right: 1px solid #e8e8ee;
+      background: #f9f9fc;
+      font-size: 0.835rem;
+    }
+    .sidebar-logo {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #4361ee;
+      margin-bottom: 1.75rem;
+    }
+    .sidebar nav a {
+      display: block;
+      color: #555;
+      text-decoration: none;
+      padding: 0.3rem 0;
+      transition: color 0.15s;
+    }
+    .sidebar nav a:hover, .sidebar nav a.active {
+      color: #4361ee;
+    }
+    .sidebar nav a.depth-2 { padding-left: 1rem; font-size: 0.8rem; }
+    .sidebar .sep { height: 1px; background: #e0e0e8; margin: 0.65rem 0; }
+
+    /* ── Main Content ──────────────────────────────────── */
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 3rem 3.5rem 6rem;
+    }
+
+    /* ── Hero ───────────────────────────────────────────── */
+    .hero {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #e8e8ee;
+    }
+    .hero h1 {
+      font-size: 2.35rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: #111;
+      margin-bottom: 0.75rem;
+    }
+    .hero .subtitle {
+      font-size: 1.15rem;
+      color: #555;
+      max-width: 620px;
+    }
+    .hero .meta {
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: #888;
+    }
+    .hero .meta code {
+      background: #eef1ff;
+      color: #4361ee;
+      padding: 0.15em 0.45em;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+    }
+    .tldr {
+      background: #f4f6ff;
+      border-left: 4px solid #4361ee;
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-top: 1.5rem;
+      font-size: 0.92rem;
+      color: #333;
+    }
+
+    /* ── Typography ────────────────────────────────────── */
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #111;
+      margin-top: 3.5rem;
+      margin-bottom: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e8e8ee;
+    }
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #222;
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+    h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li { margin-bottom: 0.35rem; }
+    li > ul, li > ol { margin-top: 0.35rem; margin-bottom: 0; }
+
+    a { color: #4361ee; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e8e8ee;
+      margin: 2.5rem 0;
+    }
+
+    /* ── Code ───────────────────────────────────────────── */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      background: #f3f4f7;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: #d63384;
+    }
+    pre {
+      background: #f6f7fa;
+      border: 1px solid #e4e5eb;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 1.25rem;
+      font-size: 0.84rem;
+      line-height: 1.6;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    /* ── Tables ─────────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      margin-bottom: 1.25rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #e8e8ee;
+    }
+    th {
+      font-weight: 600;
+      background: #f5f6fa;
+      color: #333;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    tr:last-child td { border-bottom: none; }
+    table { border: 1px solid #e8e8ee; border-radius: 8px; overflow: hidden; }
+
+    /* ── Callouts / Alerts ──────────────────────────────── */
+    .callout {
+      padding: 0.85rem 1.15rem;
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .callout-info { background: #eef3ff; border-left: 4px solid #4361ee; }
+    .callout-tip { background: #eefbf3; border-left: 4px solid #2ecc71; }
+    .callout-warning { background: #fff8e6; border-left: 4px solid #f0ad4e; }
+    .callout-important { background: #fef0f0; border-left: 4px solid #e74c3c; }
+    .callout .callout-label {
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+    }
+    .callout-info .callout-label { color: #4361ee; }
+    .callout-tip .callout-label { color: #27ae60; }
+    .callout-warning .callout-label { color: #d68910; }
+    .callout-important .callout-label { color: #c0392b; }
+
+    /* ── Diagrams (ASCII art) ──────────────────────────── */
+    .diagram {
+      background: #fafbfd;
+      border: 1px solid #e0e2ea;
+      border-radius: 10px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #555;
+      text-align: center;
+    }
+
+    /* ── Step Cards ─────────────────────────────────────── */
+    .step-card {
+      background: #fff;
+      border: 1px solid #e4e5eb;
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .step-card h3 {
+      margin-top: 0;
+      color: #4361ee;
+    }
+    .step-badge {
+      display: inline-block;
+      background: #eef1ff;
+      color: #4361ee;
+      font-weight: 600;
+      font-size: 0.72rem;
+      padding: 0.2em 0.65em;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+    .learn-list {
+      background: #f9f9fc;
+      border-radius: 8px;
+      padding: 0.85rem 1rem 0.85rem 2rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .learn-list li { margin-bottom: 0.25rem; }
+
+    /* ── Use Case Cards ────────────────────────────────── */
+    .usecase-card {
+      background: #fff;
+      border: 1px solid #e4e5eb;
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .usecase-card h3 { margin-top: 0; }
+
+    /* ── Collapsible / Details ──────────────────────────── */
+    details {
+      margin-bottom: 1rem;
+      border: 1px solid #e4e5eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    summary {
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      background: #f9f9fc;
+      user-select: none;
+    }
+    summary:hover { background: #f0f1f7; }
+    details[open] summary { border-bottom: 1px solid #e4e5eb; }
+    details > div { padding: 1rem; }
+
+    /* ── Flowchart (CSS only) ──────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0;
+      font-size: 0.85rem;
+    }
+    .flow-step {
+      background: #eef1ff;
+      border: 1px solid #d2d8f7;
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 500;
+      color: #333;
+    }
+    .flow-step.accent { background: #4361ee; color: #fff; border-color: #4361ee; }
+    .flow-arrow { color: #aaa; font-size: 1.1rem; }
+
+    /* ── Migration Highlight ───────────────────────────── */
+    .migration-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .migration-box > div {
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+    }
+    .migration-box .before { background: #f0f0f3; }
+    .migration-box .after { background: #eef6ee; border: 1px solid #c5e1c5; }
+    .migration-box .label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .migration-box .before .label { color: #888; }
+    .migration-box .after .label { color: #27ae60; }
+
+    /* ── Pattern Cards ─────────────────────────────────── */
+    .pattern {
+      border: 1px solid #e4e5eb;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      background: #fff;
+    }
+    .pattern h4 {
+      margin-top: 0;
+      color: #4361ee;
+      font-size: 0.95rem;
+    }
+
+    /* ── Back to top ───────────────────────────────────── */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #4361ee;
+      color: #fff;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(67,97,238,0.3);
+      transition: opacity 0.2s;
+      z-index: 99;
+    }
+    .back-to-top.visible { display: flex; }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.82rem;
+      color: #999;
+      border-top: 1px solid #e8e8ee;
+      margin-top: 3rem;
+    }
+
+    /* ── Responsive ────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .sidebar { display: none; }
+      main { padding: 2rem 1.25rem 4rem; }
+      .hero h1 { font-size: 1.75rem; }
+      .migration-box { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">📖 Gemini Computer Use</div>
+    <nav id="toc">
+      <a href="#part-1">Part 1: What is Computer Use?</a>
+      <a href="#part-2">Part 2: Two Paths</a>
+      <a href="#part-3">Part 3: Prerequisites &amp; Setup</a>
+      <div class="sep"></div>
+      <a href="#key-patterns">Key Code Patterns</a>
+      <div class="sep"></div>
+      <a href="#part-4">Part 4: Step-by-Step Tutorial</a>
+      <a href="#step-1" class="depth-2">Step 1: Hello Screenshot</a>
+      <a href="#step-2" class="depth-2">Step 2: First Action</a>
+      <a href="#step-3" class="depth-2">Step 3: Browser Agent</a>
+      <a href="#step-4" class="depth-2">Step 4: Mobile Agent</a>
+      <a href="#step-5" class="depth-2">Step 5: Enterprise</a>
+      <div class="sep"></div>
+      <a href="#part-5">Part 5: Use Cases</a>
+      <a href="#uc-1" class="depth-2">UC 1: QA Testing</a>
+      <a href="#uc-2" class="depth-2">UC 2: Price Comparison</a>
+      <a href="#uc-3" class="depth-2">UC 3: Mobile Testing</a>
+      <a href="#uc-4" class="depth-2">UC 4: Web Research</a>
+      <a href="#uc-5" class="depth-2">UC 5: Form Filling</a>
+      <div class="sep"></div>
+      <a href="#part-6">Part 6: Best Practices</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#part-7">Part 7: What's Next?</a>
+      <a href="#appendix">Appendix: Action Reference</a>
+    </nav>
+  </aside>
+
+  <!-- ═══════ MAIN ═══════ -->
+  <main>
+
+    <!-- ─── HERO ─── -->
+    <div class="hero">
+      <h1>Mastering Gemini Computer Use</h1>
+      <p class="subtitle">Build AI agents that can see, understand, and interact with any screen — browsers, mobile devices, and desktops.</p>
+      <p class="meta">Published June 2026 &nbsp;·&nbsp; Model: <code>gemini-3.5-flash</code> &nbsp;·&nbsp; SDK: <code>google-genai ≥ 2.7.0</code></p>
+      <div class="tldr">
+        <strong>TL;DR</strong> — Gemini Computer Use lets you build AI agents that control real screens by looking at screenshots and deciding what to click, type, or scroll — just like a human would. This tutorial walks you through five progressive steps (from "Hello Screenshot" to a full enterprise platform), then shows five real-world use cases. All code is included and runnable.
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PART 1 -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="part-1">Part 1: What is Computer Use?</h2>
+
+    <h3>The Problem with Traditional Automation</h3>
+    <p>If you've ever written a Selenium test or a Puppeteer script, you know the pain. You spend hours crafting CSS selectors, XPath expressions, and fragile wait conditions. Then one day, the website changes a class name, and <em>everything breaks</em>. This is the fundamental brittleness of selector-based automation: it depends on the implementation details of the UI rather than what's actually <em>visible on the screen</em>.</p>
+    <p>And there's a deeper problem. Not every application exposes an API. Legacy enterprise software, desktop apps, mobile interfaces — there's an enormous surface area of software that can only be operated by a human looking at a screen and clicking around.</p>
+
+    <h3>The Solution: AI That Sees</h3>
+    <p>Gemini Computer Use takes a radically different approach. Instead of parsing HTML or querying the DOM, the model <em>looks at a screenshot</em> and decides what to do — exactly the way a human would. It doesn't need selectors. It doesn't need APIs. It just needs <em>eyes</em>.</p>
+    <p>The paradigm is beautifully simple: <strong>Observe → Think → Act</strong>.</p>
+
+    <div class="flow">
+      <div class="flow-step">👤 User provides a goal</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">📸 Capture screenshot</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step accent">🧠 Gemini analyzes</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">🖱️ Execute action</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">📸 New screenshot</div>
+      <span class="flow-arrow">↩</span>
+    </div>
+
+    <ol>
+      <li><strong>Observe</strong> — Capture a screenshot of the current screen state</li>
+      <li><strong>Think</strong> — Send it to Gemini 3.5 Flash, which analyzes the visual content and decides the next action</li>
+      <li><strong>Act</strong> — Execute the action (click a button, type text, scroll down), then capture a new screenshot and loop back</li>
+    </ol>
+    <p>This loop continues until the model decides the task is complete and responds with text instead of a function call.</p>
+
+    <h3>Why Gemini 3.5 Flash is Special</h3>
+    <p>Computer Use isn't a separate model or a bolted-on capability. In <code>gemini-3.5-flash</code>, it's a <strong>native tool</strong> — declared alongside other tools like function calling and code execution. This design decision has profound implications:</p>
+    <ul>
+      <li><strong>Multi-tool composition</strong> — The model can interleave browser actions with custom function calls in the same conversation. Click a button, then call <code>save_product()</code> to store data, then scroll down for more.</li>
+      <li><strong>Three environments</strong> — One model supports <code>ENVIRONMENT_BROWSER</code>, <code>ENVIRONMENT_MOBILE</code>, and <code>ENVIRONMENT_DESKTOP</code>. You declare the environment and the model adapts its available actions.</li>
+      <li><strong>Thinking mode</strong> — You can enable <code>ThinkingConfig(include_thoughts=True)</code> to see the model's reasoning before each action, invaluable for debugging.</li>
+    </ul>
+
+    <h3>Key Technical Concepts</h3>
+    <p><strong>Normalized Coordinates (0–999):</strong> The model doesn't know your screen resolution. Instead, it outputs coordinates in a normalized 0–999 range. You convert them to pixels with:</p>
+    <pre><code>pixel = int(normalized / 1000 * screen_dimension)</code></pre>
+    <p>For a 1280×800 viewport, coordinate <code>(500, 500)</code> maps to pixel <code>(640, 400)</code> — the centre of the screen.</p>
+    <p><strong>The <code>intent</code> Field:</strong> Each function call includes an <code>intent</code> string describing <em>what the model is trying to achieve</em>, not just the mechanical action. This is gold for debugging.</p>
+    <p><strong>Safety Decisions:</strong> When the model encounters potentially sensitive actions (making a purchase, sending a message, deleting data), it includes a <code>safety_decision</code> object requesting explicit user confirmation.</p>
+
+    <h3>What Changed from Legacy to Current</h3>
+    <p>The previous <code>gemini-2.5-computer-use-preview</code> model was an early experiment with a separate API surface. The current <code>gemini-3.5-flash</code> approach integrates Computer Use as a standard tool — meaning the same model, the same SDK, and the same <code>generate_content()</code> call you already know.</p>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PART 2 -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="part-2">Part 2: Two Paths — Gemini API vs Enterprise Platform</h2>
+
+    <p>There are two ways to use Gemini Computer Use, and which one you choose depends on where you are in the development lifecycle.</p>
+
+    <h3>Gemini API (ai.google.dev)</h3>
+    <p>The fastest path from zero to working agent. Grab an API key, pip install the SDK, and you're running. You build your own execution environment (Playwright for browsers, ADB for Android), which gives you maximum flexibility and zero cloud dependencies.</p>
+
+    <h3>Enterprise Agent Platform (Vertex AI)</h3>
+    <p>When you're ready for production, Vertex AI adds IAM-based authentication, managed browser sandboxes (no local browser needed), VPC Service Controls, audit logging, and all the enterprise trimmings. The remarkable part? <strong>The code is almost identical.</strong> You change one line.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Aspect</th><th>Gemini API</th><th>Enterprise Platform</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Authentication</strong></td><td>API Key</td><td>IAM + Service Accounts</td></tr>
+          <tr><td><strong>Execution Environment</strong></td><td>You build it (Playwright/ADB)</td><td>Managed sandboxes available</td></tr>
+          <tr><td><strong>Best For</strong></td><td>Prototyping, learning, CI/CD</td><td>Production, multi-tenant, enterprise</td></tr>
+          <tr><td><strong>Pricing</strong></td><td>Per-token only</td><td>Per-token + sandbox compute</td></tr>
+          <tr><td><strong>Security</strong></td><td>Your responsibility</td><td>Platform-level isolation + VPC-SC</td></tr>
+          <tr><td><strong>Setup Time</strong></td><td>5 minutes</td><td>30 minutes (GCP project setup)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The migration between paths is a single-line change in client construction:</p>
+
+    <div class="migration-box">
+      <div class="before">
+        <div class="label">Before — Gemini API (prototyping)</div>
+        <pre><code class="language-python"># Gemini API (prototyping)
+client = genai.Client(api_key="YOUR_KEY")</code></pre>
+      </div>
+      <div class="after">
+        <div class="label">After — Vertex AI (production)</div>
+        <pre><code class="language-python"># That's it — that's the migration
+client = genai.Client(
+    vertexai=True,
+    project="my-project",
+    location="us-central1",
+)</code></pre>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PART 3 -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="part-3">Part 3: Prerequisites &amp; Setup</h2>
+
+    <h3>What You Need</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Requirement</th><th>Needed For</th><th>How to Get It</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Python 3.10+</strong> (3.12+ recommended)</td><td>All steps</td><td><code>python3 --version</code> to check</td></tr>
+          <tr><td><strong>Gemini API key</strong></td><td>Steps 1–4, Use Cases 1–5</td><td>Free from <a href="https://aistudio.google.com/apikey">Google AI Studio</a></td></tr>
+          <tr><td><strong>Android SDK + Emulator</strong></td><td>Step 4, Use Case 3</td><td>See Android Setup below</td></tr>
+          <tr><td><strong>Google Cloud project</strong></td><td>Step 5 only</td><td>See Enterprise Setup below</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Step-by-Step Installation</h3>
+
+    <h4>1. Clone the repository</h4>
+    <pre><code class="language-bash">git clone https://github.com/your-org/computer-use-tutorial.git
+cd computer-use-tutorial</code></pre>
+
+    <h4>2. Create a Python virtual environment</h4>
+    <pre><code class="language-bash">python3 -m venv .venv
+source .venv/bin/activate   # macOS / Linux
+# On Windows: .venv\Scripts\activate</code></pre>
+    <div class="callout callout-warning">
+      <div class="callout-label">⚠️ Important</div>
+      Always activate the virtual environment before running any tutorial script. If your shell prompt doesn't show <code>(.venv)</code>, run <code>source .venv/bin/activate</code> again.
+    </div>
+
+    <h4>3. Install Python dependencies</h4>
+    <pre><code class="language-bash">pip install -r requirements.txt</code></pre>
+    <p>The <code>requirements.txt</code> is intentionally lean:</p>
+    <pre><code>google-genai>=2.7.0
+playwright==1.55.0
+pydantic>=2.0
+rich
+termcolor
+python-dotenv</code></pre>
+
+    <h4>4. Install the Chromium browser binary</h4>
+    <pre><code class="language-bash">playwright install chromium</code></pre>
+    <p>Verify it works:</p>
+    <pre><code class="language-bash">python3 -c "from playwright.sync_api import sync_playwright; pw = sync_playwright().start(); b = pw.chromium.launch(); print('✅ Playwright Chromium works'); b.close(); pw.stop()"</code></pre>
+
+    <h4>5. Configure your Gemini API key</h4>
+    <pre><code class="language-bash">cp .env.example .env
+# Edit .env and replace 'your-api-key-here' with your actual key</code></pre>
+    <p>Your <code>.env</code> file should look like:</p>
+    <pre><code>GEMINI_API_KEY=AIzaSy...(your actual key)</code></pre>
+
+    <h4>6. Verify — run Step 01</h4>
+    <pre><code class="language-bash">cd 01-hello-screenshot
+python hello_screenshot.py</code></pre>
+    <p>If you see the model describe the Hacker News page, your setup is complete for Steps 1–3 and browser-based use cases. 🎉</p>
+
+    <details>
+      <summary>🤖 Android Emulator Setup (Step 4 &amp; Use Case 3)</summary>
+      <div>
+        <div class="callout callout-info">
+          <div class="callout-label">ℹ️ Note</div>
+          Skip this if you only want the browser-based examples (Steps 1–3, Use Cases 1–2, 4–5).
+        </div>
+
+        <h4>Option A: Use the included setup script</h4>
+        <pre><code class="language-bash">cd 04-mobile-agent
+chmod +x setup_emulator.sh
+./setup_emulator.sh</code></pre>
+        <p>This idempotent script installs Java, Android SDK, creates an AVD named <code>ComputerUseTutorial</code>, and prints the export lines for your shell.</p>
+
+        <h4>Option B: Existing Android SDK</h4>
+        <pre><code class="language-bash"># Common ANDROID_HOME locations:
+export ANDROID_HOME=~/Library/Android/sdk        # Android Studio default
+export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools  # Homebrew (Apple Silicon)
+
+# Add to PATH
+export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+
+# Add to ~/.zshrc so it persists
+echo 'export ANDROID_HOME=~/Library/Android/sdk' >> ~/.zshrc
+echo 'export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"' >> ~/.zshrc
+source ~/.zshrc</code></pre>
+
+        <h4>Starting and verifying the emulator</h4>
+        <pre><code class="language-bash"># List and start
+emulator -list-avds
+emulator -avd &lt;your-avd-name&gt;
+
+# Verify it's ready
+adb devices                          # → emulator-5554  device
+adb shell getprop sys.boot_completed # → 1</code></pre>
+      </div>
+    </details>
+
+    <details>
+      <summary>🏢 Enterprise Platform Setup (Step 5)</summary>
+      <div>
+        <div class="callout callout-info">
+          <div class="callout-label">ℹ️ Note</div>
+          Skip this if you don't have a Google Cloud project or only want the Gemini API.
+        </div>
+        <pre><code class="language-bash"># Authenticate
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project YOUR_PROJECT_ID
+
+# Enable Vertex AI API
+gcloud services enable aiplatform.googleapis.com</code></pre>
+        <p>Add to your <code>.env</code>:</p>
+        <pre><code>GCP_PROJECT_ID=your-gcp-project-id
+GCP_LOCATION=us-central1</code></pre>
+        <p>Required IAM role: <code>roles/aiplatform.user</code></p>
+        <pre><code class="language-bash">gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+    --member="user:your-email@domain.com" \
+    --role="roles/aiplatform.user"</code></pre>
+      </div>
+    </details>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- KEY PATTERNS -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="key-patterns">Understanding the Code: Key Computer Use Patterns</h2>
+    <p>Before diving into the step-by-step code, here are the patterns you'll see in every script.</p>
+
+    <div class="pattern">
+      <h4>Pattern 1: Normalized Coordinates (0–999)</h4>
+      <p>The model always outputs coordinates in a <strong>0–999 grid</strong>, regardless of screen size. Your code must denormalize:</p>
+      <pre><code class="language-python"># Model returns: click(x=396, y=185)  — these are NOT pixels!
+pixel_x = int(396 / 1000 * viewport_width)   # 396 → 506 on a 1280px screen
+pixel_y = int(185 / 1000 * viewport_height)  # 185 → 148 on an 800px screen</code></pre>
+      <p>This is the most common source of bugs — forgetting to denormalize will cause clicks to land in the wrong place.</p>
+    </div>
+
+    <div class="pattern">
+      <h4>Pattern 2: The Agentic Loop</h4>
+      <pre><code>1. Take screenshot → send to model with task description
+2. Model returns: function_call (e.g., click, type, scroll)
+3. Execute the action in the browser/device
+4. Take a NEW screenshot → send back as FunctionResponse
+5. Goto 2 — until model returns plain text (= task complete)</code></pre>
+      <p>The key insight: <strong>the model signals it's done by returning text instead of function_calls.</strong></p>
+    </div>
+
+    <div class="pattern">
+      <h4>Pattern 3: FunctionResponse Must Include a Screenshot</h4>
+      <pre><code class="language-python">FunctionResponse(
+    name="click",
+    response={
+        "result": "ok",
+        "screenshot": types.Part.from_bytes(
+            data=screenshot_png, mime_type="image/png"
+        ),
+    },
+)</code></pre>
+      <p>Without the screenshot, the model is blind and can't plan its next move.</p>
+    </div>
+
+    <div class="pattern">
+      <h4>Pattern 4: Tool Declaration</h4>
+      <pre><code class="language-python">tools=[
+    types.Tool(
+        computer_use=types.ComputerUse(
+            environment=types.Environment.ENVIRONMENT_BROWSER,
+            # or ENVIRONMENT_MOBILE / ENVIRONMENT_DESKTOP
+        )
+    )
+]</code></pre>
+      <p>This is NOT a regular function declaration — it activates the model's built-in understanding of screenshots and UI interaction.</p>
+    </div>
+
+    <div class="pattern">
+      <h4>Pattern 5: Screenshot Pruning</h4>
+      <p>Screenshots are ~100–300 KB each. In a 20-turn conversation, that's 2–6 MB of image data in the context:</p>
+      <pre><code class="language-python"># Keep only the 3 most recent screenshots
+for old_turn in history[:-3]:
+    for part in old_turn.parts:
+        if hasattr(part, 'inline_data'):
+            part.inline_data = None  # free memory, keep text</code></pre>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PART 4 — Tutorial Steps -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="part-4">Part 4: Step-by-Step Tutorial</h2>
+
+    <!-- Step 1 -->
+    <div class="step-card" id="step-1">
+      <span class="step-badge">Step 1</span>
+      <h3>Hello Screenshot <code>01-hello-screenshot/</code></h3>
+      <ul class="learn-list">
+        <li>Launching a headless browser with Playwright</li>
+        <li>Capturing a PNG screenshot</li>
+        <li>Sending an image to Gemini 3.5 Flash with inline data</li>
+        <li>Reading the model's visual description</li>
+      </ul>
+      <p><strong>Key Concept:</strong> This step uses <strong>no Computer Use at all</strong>. It establishes the two foundational building blocks — capturing screenshots and sending them to Gemini — that every subsequent step depends on.</p>
+
+      <h4>Code Walkthrough</h4>
+      <pre><code class="language-python">response = client.models.generate_content(
+    model="gemini-3.5-flash",
+    contents=[
+        types.Content(
+            role="user",
+            parts=[
+                types.Part(text="Describe what you see..."),
+                types.Part(
+                    inline_data=types.Blob(
+                        mime_type="image/png",
+                        data=screenshot_bytes,
+                    )
+                ),
+            ],
+        )
+    ],
+)</code></pre>
+      <p>The SDK handles base64 encoding. You pass raw bytes and the MIME type — that's all.</p>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 01-hello-screenshot
+python hello_screenshot.py</code></pre>
+
+      <h4>Expected Output</h4>
+      <pre><code>✓ Gemini client initialised
+
+  Step 1 → Launch browser
+  Opening https://news.ycombinator.com
+  → Page loaded: Hacker News
+  → Viewport   : 1280×800
+
+  Step 4 → Model response
+  The screenshot shows Hacker News (news.ycombinator.com)...</code></pre>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card" id="step-2">
+      <span class="step-badge">Step 2</span>
+      <h3>Your First Computer Use Action <code>02-single-action/</code></h3>
+      <ul class="learn-list">
+        <li>Declaring the <code>ComputerUse</code> tool</li>
+        <li>Parsing the <code>function_call</code> response</li>
+        <li>Denormalizing coordinates from 0–999 to pixels</li>
+        <li>Executing a click with Playwright</li>
+      </ul>
+      <p><strong>Key Concept:</strong> This is where Computer Use enters the picture. The critical new concept is <strong>coordinate normalization</strong>.</p>
+
+      <div class="flow">
+        <div class="flow-step">🧠 Model Output<br><small>x=500, y=250<br>(0-999 space)</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">🔄 Denormalize<br><small>500/1000 × 1280 = 640<br>250/1000 × 800 = 200</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step accent">🖥️ Click<br><small>at (640, 200)</small></div>
+      </div>
+
+      <h4>Code Walkthrough</h4>
+      <pre><code class="language-python"># Declare the Computer Use tool
+computer_use_tool = types.Tool(
+    computer_use=types.ComputerUse(
+        environment=types.Environment.ENVIRONMENT_BROWSER,
+    )
+)
+
+# Send request
+response = client.models.generate_content(
+    model="gemini-3.5-flash",
+    contents=request_contents,
+    config=types.GenerateContentConfig(tools=[computer_use_tool]),
+)
+
+# Parse and execute
+for part in response.candidates[0].content.parts:
+    if part.function_call:
+        fc = part.function_call
+
+pixel_x = int(fc.args["x"] / 1000 * SCREEN_WIDTH)
+pixel_y = int(fc.args["y"] / 1000 * SCREEN_HEIGHT)
+page.mouse.click(pixel_x, pixel_y)</code></pre>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 02-single-action
+python single_action.py</code></pre>
+
+      <h4>Expected Output</h4>
+      <pre><code>  Function call received:
+    Name : click
+    x    : 496
+    y    : 302
+
+  Coordinate conversion:
+    Normalised  : (496, 302)  [0-999 space]
+    Pixel       : (634, 241)  [1280×800 viewport]
+
+  → Click executed at pixel (634, 241)
+  → Page navigated to: https://en.wikipedia.org/wiki/Main_Page
+
+  ✅ SUCCESS — Navigated to English Wikipedia!</code></pre>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card" id="step-3">
+      <span class="step-badge">Step 3</span>
+      <h3>Building a Full Browser Agent <code>03-browser-agent/</code></h3>
+      <ul class="learn-list">
+        <li>The complete observe-think-act agentic loop</li>
+        <li>Managing conversation history with the model</li>
+        <li>Screenshot pruning to stay within context limits</li>
+        <li>Constructing <code>FunctionResponse</code> objects with screenshot blobs</li>
+        <li>Safety decision handling (human-in-the-loop)</li>
+        <li>Error handling with exponential backoff retries</li>
+      </ul>
+      <p><strong>Key Concept:</strong> This is the <em>big step</em> — going from a single action to a fully autonomous agent.</p>
+
+      <h4>Critical Pattern: Screenshot Pruning</h4>
+      <pre><code class="language-python">def _prune_old_screenshots(self) -> None:
+    screenshots_seen = 0
+    for content in reversed(self._history):
+        if content.role != "user" or not content.parts:
+            continue
+        has_screenshot = any(
+            p.function_response and p.function_response.parts
+            for p in content.parts
+        )
+        if has_screenshot:
+            screenshots_seen += 1
+            if screenshots_seen > self.MAX_SCREENSHOTS_IN_HISTORY:
+                for part in content.parts:
+                    if part.function_response and part.function_response.parts:
+                        part.function_response.parts = None</code></pre>
+
+      <h4>Critical Pattern: FunctionResponse Construction</h4>
+      <pre><code class="language-python">FunctionResponse(
+    name=fc.name,
+    response={"url": current_url},
+    parts=[
+        types.FunctionResponsePart(
+            inline_data=types.FunctionResponseBlob(
+                mime_type="image/png",
+                data=post_action_png,
+            ),
+        ),
+    ],
+)</code></pre>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 03-browser-agent
+python browser_agent.py --task "Go to https://news.ycombinator.com and tell me the top 3 stories"</code></pre>
+
+      <h4>Expected Output</h4>
+      <pre><code>╭──────────────────────────────────────────╮
+│ Gemini Computer Use — Browser Agent      │
+│ Model: gemini-3.5-flash  |  Viewport: …  │
+╰──────────────────────────────────────────╯
+
+── Iteration 1 ──
+  ▶ navigate(url=https://news.ycombinator.com)
+  → Screenshot captured
+
+── Iteration 2 ──
+  ▶ take_screenshot()
+
+── Iteration 3 ──
+─── Task Complete ───
+Agent Summary: The top 3 stories on Hacker News are: ...</code></pre>
+      <p>Architecture: <code>browser_agent.py</code> (AI loop) + <code>playwright_env.py</code> (browser abstraction).</p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card" id="step-4">
+      <span class="step-badge">Step 4</span>
+      <h3>Android Mobile Agent <code>04-mobile-agent/</code></h3>
+      <ul class="learn-list">
+        <li>The <strong>Interactions API</strong> — a stateful alternative to <code>generate_content()</code></li>
+        <li>Controlling Android via ADB (Android Debug Bridge)</li>
+        <li>Mobile environment with touch actions (tap, swipe, long-press)</li>
+        <li>Chaining stateful interactions with <code>previous_interaction_id</code></li>
+      </ul>
+
+      <h4>Interactions API vs generateContent</h4>
+      <div class="migration-box">
+        <div class="before">
+          <div class="label">generateContent — You manage history</div>
+          <pre><code class="language-python">response = client.models.generate_content(
+    model="gemini-3.5-flash",
+    contents=full_conversation_history,
+    config=GenerateContentConfig(tools=[...]),
+)</code></pre>
+        </div>
+        <div class="after">
+          <div class="label">Interactions API — Server manages state</div>
+          <pre><code class="language-python">interaction = client.interactions.create(
+    model="gemini-3.5-flash",
+    system_instruction=SYSTEM_PROMPT,
+    input=current_input,
+    tools=[{"type": "computer_use",
+            "environment": "mobile"}],
+    previous_interaction_id=previous_id,
+)</code></pre>
+        </div>
+      </div>
+
+      <h4>ADB Bridge Pattern</h4>
+      <pre><code class="language-python">def click(self, y: int, x: int, **_) -> None:
+    px, py = self._denormalize(x, y)
+    self._execute(["shell", "input", "tap", str(px), str(py)])</code></pre>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash"># Start emulator first (see Android Setup above)
+cd 04-mobile-agent
+python mobile_agent.py "Open Settings and check the Android version"</code></pre>
+
+      <h4>Expected Output</h4>
+      <pre><code>╔══════════════════════════════════════════════════════════╗
+║  Gemini Computer Use — Android Mobile Agent             ║
+║  Model: gemini-3.5-flash | API: Interactions            ║
+╚══════════════════════════════════════════════════════════╝
+
+  Turn 1/50
+  🔧 Action: open_app({'package_name': 'com.android.settings'})
+  ✓ Result: {'status': 'ok'}
+
+  ... (4-6 turns: scrolls, clicks About Phone, reads version) ...
+
+✅ Agent completed the task!
+   Model response: The Android version is 16.</code></pre>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card" id="step-5">
+      <span class="step-badge">Step 5</span>
+      <h3>Enterprise Platform <code>05-enterprise-platform/</code></h3>
+      <ul class="learn-list">
+        <li>Authenticating via Vertex AI (IAM) instead of API keys</li>
+        <li>The one-line migration from Gemini API to Vertex AI</li>
+        <li>Connecting to managed browser sandboxes via Chrome DevTools Protocol</li>
+        <li>Sandbox lifecycle management (create, use, delete)</li>
+      </ul>
+
+      <h4>The One-Line Migration</h4>
+      <p>Your agent code — the agentic loop, the action dispatch, the screenshot pruning — is <strong>100% identical</strong> between Gemini API and Vertex AI. The only change:</p>
+      <div class="migration-box">
+        <div class="before">
+          <div class="label">Before — Gemini API</div>
+          <pre><code class="language-python">client = genai.Client(api_key="YOUR_KEY")</code></pre>
+        </div>
+        <div class="after">
+          <div class="label">After — Vertex AI</div>
+          <pre><code class="language-python">client = genai.Client(
+    vertexai=True,          # ← this single flag
+    project="my-project",
+    location="us-central1",
+)</code></pre>
+        </div>
+      </div>
+
+      <h4>CDP Sandbox Connection</h4>
+      <pre><code class="language-python"># Local browser (Steps 1-3):
+browser = pw.chromium.launch(headless=True)
+
+# Managed sandbox (Step 5):
+browser = pw.chromium.connect_over_cdp(cdp_endpoint)</code></pre>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 05-enterprise-platform
+
+# Approach 1: Self-managed browser (your local Playwright)
+python enterprise_agent.py --approach self-managed --project YOUR_PROJECT_ID
+
+# Approach 2: Managed sandbox (cloud-hosted browser)
+python enterprise_agent.py --approach managed-sandbox --project YOUR_PROJECT_ID</code></pre>
+      <div class="callout callout-tip">
+        <div class="callout-label">💡 Tip</div>
+        Replace <code>YOUR_PROJECT_ID</code> with your actual Google Cloud project ID. You can also set it in <code>.env</code> as <code>GCP_PROJECT_ID=my-company-prod-123</code>.
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PART 5 — USE CASES -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="part-5">Part 5: Real-World Use Cases</h2>
+    <p>Each use case in <code>06-use-cases/</code> is a complete, self-contained script demonstrating a practical application.</p>
+
+    <!-- UC 1 -->
+    <div class="usecase-card" id="uc-1">
+      <h3>Use Case 1: QA Testing (TodoMVC)</h3>
+      <p><strong>Scenario:</strong> Run end-to-end QA tests on a React web app without writing fragile selectors. The agent <em>sees</em> the app and tests it the way a human QA tester would.</p>
+      <p><strong>Architecture:</strong> <code>generateContent</code> API with a full agentic loop + custom <code>report_qa_result</code> function (multi-tool composition).</p>
+
+      <h4>The Prompt</h4>
+      <pre><code>Navigate to https://todomvc.com/examples/react/dist/ and perform QA testing:
+1. Add three todos: 'Buy groceries', 'Read a book', 'Write code'
+2. Mark 'Read a book' as complete
+3. Verify items are displayed correctly
+4. Click the 'Completed' filter
+5. Report what you see</code></pre>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 06-use-cases/usecase1_qa_testing
+python qa_agent.py</code></pre>
+
+      <h4>Step-by-Step Walkthrough</h4>
+      <ol>
+        <li>Agent navigates to TodoMVC React app</li>
+        <li>Clicks "What needs to be done?" input and types "Buy groceries" + Enter</li>
+        <li>Repeats for "Read a book" and "Write code"</li>
+        <li>Clicks the circle next to "Read a book" to mark it complete</li>
+        <li>Verifies all three items are visible with correct state</li>
+        <li>Clicks the "Completed" filter</li>
+        <li>Confirms only "Read a book" appears with strikethrough</li>
+        <li>Returns a structured test report</li>
+      </ol>
+      <p><strong>Key Takeaway:</strong> Computer Use can replace hundreds of lines of Selenium/Cypress test code with a single natural-language task description.</p>
+    </div>
+
+    <!-- UC 2 -->
+    <div class="usecase-card" id="uc-2">
+      <h3>Use Case 2: Price Comparison</h3>
+      <p><strong>Scenario:</strong> Compare product prices across the web. The agent searches Google Shopping, extracts prices, and saves them through a custom function — demonstrating <strong>multi-tool composition</strong>.</p>
+      <p><strong>Architecture:</strong> Computer Use (for browsing) + custom <code>save_product()</code> function in the same conversation.</p>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 06-use-cases/usecase2_price_comparison
+python price_agent.py</code></pre>
+
+      <h4>Expected Results</h4>
+      <pre><code>┌─────────────────────────────────────────────────┐
+│           Product Comparison Results            │
+├──────┬──────────────────────────┬────────┬──────┤
+│  #   │ Product                  │ Price  │ From │
+├──────┼──────────────────────────┼────────┼──────┤
+│  1   │ Sony WH-1000XM5          │ $278   │ …    │
+│  2   │ Bose QuietComfort Ultra  │ $329   │ …    │
+│  3   │ Apple AirPods Max 2      │ $549   │ …    │
+└──────┴──────────────────────────┴────────┴──────┘</code></pre>
+      <p><strong>Key Takeaway:</strong> Multi-tool composition is the killer feature. The model seamlessly switches between "driving the browser" and "calling your business logic functions."</p>
+    </div>
+
+    <!-- UC 3 -->
+    <div class="usecase-card" id="uc-3">
+      <h3>Use Case 3: Mobile App Testing</h3>
+      <p><strong>Scenario:</strong> Verify that an Android app's Settings screen works — toggle dark mode, check About Phone, verify system info.</p>
+      <p><strong>Architecture:</strong> Uses the <strong>Interactions API</strong> with <code>ENVIRONMENT_MOBILE</code>.</p>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 06-use-cases/usecase3_mobile_testing
+python app_test_agent.py</code></pre>
+      <div class="callout callout-warning">
+        <div class="callout-label">⚠️ Prerequisite</div>
+        You need a running Android emulator. See the Android Setup section above.
+      </div>
+      <p><strong>Key Takeaway:</strong> The Interactions API handles state management server-side, making mobile agents significantly simpler to build.</p>
+    </div>
+
+    <!-- UC 4 -->
+    <div class="usecase-card" id="uc-4">
+      <h3>Use Case 4: Web Research &amp; Report</h3>
+      <p><strong>Scenario:</strong> Research a topic across multiple websites and produce a structured Markdown report using dual custom functions (<code>save_finding</code> + <code>generate_report</code>).</p>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 06-use-cases/usecase4_web_research
+python research_agent.py
+# Or with a custom topic:
+python research_agent.py --search "AI safety regulations 2026"</code></pre>
+      <p><strong>Expected Results:</strong> A <code>research_report.md</code> file saved to disk with structured findings, source URLs, and a summary.</p>
+      <p><strong>Key Takeaway:</strong> Computer Use + custom functions turns Gemini into a <em>research agent</em> that can navigate the open web and produce structured, citable output.</p>
+    </div>
+
+    <!-- UC 5 -->
+    <div class="usecase-card" id="uc-5">
+      <h3>Use Case 5: Form Filling</h3>
+      <p><strong>Scenario:</strong> Fill out a complex HTML form with text inputs, radio buttons, checkboxes, dropdowns, and text areas. A classic RPA task.</p>
+
+      <h4>The Prompt</h4>
+      <pre><code>Fill out the form at https://demoqa.com/automation-practice-form with:
+- Name: Jane Smith
+- Email: jane.smith@example.com
+- Gender: Female
+- Mobile: 1234567890
+- Subject: Computer Science
+- Hobby: Reading
+- Address: 123 AI Street, San Francisco, CA
+Then submit the form and verify the confirmation.</code></pre>
+
+      <h4>Running It</h4>
+      <pre><code class="language-bash">cd 06-use-cases/usecase5_form_filling
+python form_agent.py</code></pre>
+      <p><strong>Key Takeaway:</strong> Computer Use handles diverse HTML controls (radio buttons, checkboxes, dropdowns) that would each require different selector strategies in traditional automation. The model just <em>sees</em> the form and fills it in.</p>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PART 6 -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="part-6">Part 6: Best Practices &amp; Safety</h2>
+
+    <h3>Safety Decisions &amp; Human-in-the-Loop</h3>
+    <p>When the model encounters potentially sensitive actions — purchases, data deletion, sending messages, authentication — it includes a <code>safety_decision</code> field. <strong>Always check for this:</strong></p>
+    <div class="flow">
+      <div class="flow-step">Function Call received</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step">Has safety_decision?</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step" style="background:#fff8e6;border-color:#f0ad4e;">⚠️ Display warning</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-step accent">User approves? Execute</div>
+    </div>
+    <p>In production, never auto-acknowledge safety decisions. Present them to a human operator for review.</p>
+
+    <h3>Prompt Injection Detection</h3>
+    <p>When your agent browses the open web, it may encounter pages with malicious instructions. Mitigations:</p>
+    <ul>
+      <li><strong>Use specific system prompts</strong> that constrain the model's behaviour</li>
+      <li><strong>Validate function call targets</strong> — if the model navigates to an unexpected domain, flag it</li>
+      <li><strong>Set maximum iteration limits</strong> to prevent infinite loops</li>
+      <li><strong>Review the model's thinking</strong> (when enabled) for signs of confusion</li>
+    </ul>
+
+    <h3>Sandboxing and Access Control</h3>
+    <ul>
+      <li>Run browser agents in isolated environments (Docker, managed sandboxes)</li>
+      <li>Never give the agent access to authenticated sessions with real credentials</li>
+      <li>Use read-only modes where possible</li>
+      <li>For enterprise, use Vertex AI managed sandboxes for security isolation</li>
+    </ul>
+
+    <h3>Screenshot Management</h3>
+    <ul>
+      <li><strong>Prune aggressively</strong> — keep only the 2–3 most recent screenshots</li>
+      <li><strong>Use viewport-only screenshots</strong> (<code>full_page=False</code>) to avoid massive images</li>
+      <li><strong>Standard viewport sizes</strong> (1280×800 or 1440×900) give the model consistent coordinates</li>
+    </ul>
+
+    <h3>Error Handling and Retries</h3>
+    <ul>
+      <li>Implement <strong>exponential backoff</strong> for API calls (transient errors are common)</li>
+      <li>Set a <strong>hard cap on iterations</strong> (25 turns is a good default)</li>
+      <li>Handle the "empty response" case — sometimes the model returns neither text nor function calls. Retry once before giving up.</li>
+    </ul>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- TROUBLESHOOTING -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="troubleshooting">Troubleshooting</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Problem</th><th>Cause</th><th>Solution</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GEMINI_API_KEY not set</code></td>
+            <td><code>.env</code> missing or not loaded</td>
+            <td>Run <code>cp .env.example .env</code> and add your key</td>
+          </tr>
+          <tr>
+            <td><code>Executable doesn't exist</code></td>
+            <td>Chromium not installed</td>
+            <td>Run <code>playwright install chromium</code></td>
+          </tr>
+          <tr>
+            <td><code>emulator: command not found</code></td>
+            <td>Android emulator not on PATH</td>
+            <td>Set <code>export PATH="$ANDROID_HOME/emulator:..."</code></td>
+          </tr>
+          <tr>
+            <td><code>adb devices</code> shows empty list</td>
+            <td>Emulator not running/booted</td>
+            <td>Start with <code>emulator -avd &lt;name&gt;</code>, wait for boot</td>
+          </tr>
+          <tr>
+            <td><code>Timeout 30000ms exceeded</code></td>
+            <td>Target website is slow</td>
+            <td>Scripts use 60s timeouts. Check your internet</td>
+          </tr>
+          <tr>
+            <td>Empty response from model</td>
+            <td>Transient API issue</td>
+            <td>Agents include retry logic. If persistent, try again</td>
+          </tr>
+          <tr>
+            <td>AFC warnings in console</td>
+            <td>Mixing tool types</td>
+            <td>Normal and cosmetic — doesn't affect functionality</td>
+          </tr>
+          <tr>
+            <td><code>ModuleNotFoundError</code></td>
+            <td>Dependencies not installed</td>
+            <td>Run <code>pip install -r requirements.txt</code></td>
+          </tr>
+          <tr>
+            <td><code>DefaultCredentialsError</code></td>
+            <td>GCP credentials not configured</td>
+            <td>Run <code>gcloud auth application-default login</code></td>
+          </tr>
+          <tr>
+            <td>Mobile agent can't connect</td>
+            <td>Wrong device serial</td>
+            <td>Pass <code>--device emulator-5554</code> explicitly</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PART 7 -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="part-7">Part 7: What's Next?</h2>
+
+    <h3>Multi-Environment Agents</h3>
+    <p>Imagine an agent that starts on a mobile device, opens a link in the browser, fills in a form, goes back to the mobile app to verify the result — all in one conversation. With <code>gemini-3.5-flash</code>, this is architecturally possible by switching the <code>environment</code> parameter between turns.</p>
+
+    <h3>Integration with Other Gemini Tools</h3>
+    <p>Computer Use composes naturally with:</p>
+    <ul>
+      <li><strong>Google Search grounding</strong> — for factual lookups before or during browsing</li>
+      <li><strong>Code Execution</strong> — generate and run Python code to process data extracted from screenshots</li>
+      <li><strong>Custom function calling</strong> — as demonstrated in Use Cases 2 and 4</li>
+    </ul>
+
+    <h3>Production Deployment Patterns</h3>
+    <ul>
+      <li><strong>Cloud Run + Managed Sandbox</strong> — stateless API that provisions a sandbox per request</li>
+      <li><strong>Pub/Sub trigger</strong> — event-driven agents that respond to external signals</li>
+      <li><strong>Batch processing</strong> — run hundreds of form-filling or QA tasks in parallel</li>
+    </ul>
+
+    <h3>Community Resources</h3>
+    <ul>
+      <li><a href="https://ai.google.dev/gemini-api/docs/computer-use">Gemini API Documentation</a></li>
+      <li><a href="https://cloud.google.com/vertex-ai/generative-ai/docs/computer-use">Vertex AI Documentation</a></li>
+      <li><a href="https://github.com/googleapis/python-genai">google-genai Python SDK</a></li>
+      <li><a href="https://playwright.dev/python/">Playwright Documentation</a></li>
+    </ul>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- APPENDIX -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h2 id="appendix">Appendix: Complete Action Reference</h2>
+
+    <h3>Browser Environment (<code>ENVIRONMENT_BROWSER</code>)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Action</th><th>Parameters</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>click</code></td><td><code>x</code>, <code>y</code></td><td>Left-click at normalized coordinates</td></tr>
+          <tr><td><code>double_click</code></td><td><code>x</code>, <code>y</code></td><td>Double-click</td></tr>
+          <tr><td><code>triple_click</code></td><td><code>x</code>, <code>y</code></td><td>Triple-click (select paragraph)</td></tr>
+          <tr><td><code>right_click</code></td><td><code>x</code>, <code>y</code></td><td>Right-click (context menu)</td></tr>
+          <tr><td><code>middle_click</code></td><td><code>x</code>, <code>y</code></td><td>Middle-click</td></tr>
+          <tr><td><code>move</code></td><td><code>x</code>, <code>y</code></td><td>Move cursor (hover)</td></tr>
+          <tr><td><code>mouse_down</code></td><td><code>x</code>, <code>y</code></td><td>Press mouse button down</td></tr>
+          <tr><td><code>mouse_up</code></td><td><code>x</code>, <code>y</code></td><td>Release mouse button</td></tr>
+          <tr><td><code>drag_and_drop</code></td><td><code>x</code>, <code>y</code>, <code>dest_x</code>, <code>dest_y</code></td><td>Drag from start to end</td></tr>
+          <tr><td><code>type</code></td><td><code>text</code>, <code>press_enter</code></td><td>Type text, optionally Enter</td></tr>
+          <tr><td><code>press_key</code></td><td><code>key</code></td><td>Press a single key</td></tr>
+          <tr><td><code>key_down</code> / <code>key_up</code></td><td><code>key</code></td><td>Hold / release a key</td></tr>
+          <tr><td><code>hotkey</code></td><td><code>keys</code> (list)</td><td>Key combination (e.g., Ctrl+C)</td></tr>
+          <tr><td><code>scroll</code></td><td><code>x</code>, <code>y</code>, <code>direction</code>, <code>magnitude</code></td><td>Scroll at position</td></tr>
+          <tr><td><code>navigate</code></td><td><code>url</code></td><td>Go to URL</td></tr>
+          <tr><td><code>go_back</code> / <code>go_forward</code></td><td>—</td><td>Browser navigation</td></tr>
+          <tr><td><code>wait</code></td><td><code>seconds</code></td><td>Pause for N seconds</td></tr>
+          <tr><td><code>take_screenshot</code></td><td>—</td><td>Request a screenshot</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Mobile Environment (<code>ENVIRONMENT_MOBILE</code>)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Action</th><th>Parameters</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>click</code></td><td><code>x</code>, <code>y</code></td><td>Tap at normalized coordinates</td></tr>
+          <tr><td><code>type</code></td><td><code>text</code>, <code>press_enter</code></td><td>Input text into focused field</td></tr>
+          <tr><td><code>long_press</code></td><td><code>x</code>, <code>y</code>, <code>seconds</code></td><td>Long-press (tap and hold)</td></tr>
+          <tr><td><code>drag_and_drop</code></td><td><code>start_x/y</code>, <code>end_x/y</code></td><td>Swipe gesture</td></tr>
+          <tr><td><code>press_key</code></td><td><code>key</code></td><td>Device key (home, back)</td></tr>
+          <tr><td><code>go_back</code></td><td>—</td><td>Android Back button</td></tr>
+          <tr><td><code>open_app</code></td><td><code>package_name</code></td><td>Launch an app</td></tr>
+          <tr><td><code>wait</code></td><td><code>seconds</code></td><td>Pause for animations</td></tr>
+          <tr><td><code>take_screenshot</code></td><td>—</td><td>Request a screenshot</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-label">📌 Note</div>
+      All coordinates use the <strong>0–999 normalized range</strong>. Convert to pixels with: <code>pixel = normalized / 1000 * screen_dimension</code>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- REPOSITORY STRUCTURE -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <h3>Repository Structure</h3>
+    <pre><code>computer-use-tutorial/
+├── README.md                       ← You are here
+├── requirements.txt                ← Python dependencies
+├── .env.example                    ← Template for API key
+├── 01-hello-screenshot/            ← Step 1: Visual understanding
+│   └── hello_screenshot.py
+├── 02-single-action/               ← Step 2: One screenshot → one click
+│   └── single_action.py
+├── 03-browser-agent/               ← Step 3: Full agentic browser loop
+│   ├── browser_agent.py
+│   └── playwright_env.py
+├── 04-mobile-agent/                ← Step 4: Android + Interactions API
+│   ├── mobile_agent.py
+│   ├── adb_bridge.py
+│   └── setup_emulator.sh
+├── 05-enterprise-platform/         ← Step 5: Vertex AI + sandboxes
+│   └── enterprise_agent.py
+└── 06-use-cases/                   ← 5 real-world use cases
+    ├── usecase1_qa_testing/
+    ├── usecase2_price_comparison/
+    ├── usecase3_mobile_testing/
+    ├── usecase4_web_research/
+    └── usecase5_form_filling/</code></pre>
+
+
+    <!-- ═══════ FOOTER ═══════ -->
+    <div class="footer">
+      Built with ❤️ using <a href="https://ai.google.dev">Gemini 3.5 Flash</a> and <a href="https://playwright.dev">Playwright</a>
+    </div>
+
+  </main>
+</div>
+
+<!-- Back to top button -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- Highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+<script>
+  // Syntax highlighting
+  hljs.highlightAll();
+
+  // Back to top button visibility
+  window.addEventListener('scroll', () => {
+    document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 600);
+  });
+
+  // Active TOC highlighting
+  const tocLinks = document.querySelectorAll('#toc a');
+  const sections = [];
+  tocLinks.forEach(link => {
+    const id = link.getAttribute('href')?.replace('#', '');
+    if (id) {
+      const el = document.getElementById(id);
+      if (el) sections.push({ el, link });
+    }
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const match = sections.find(s => s.el === entry.target);
+        if (match) match.link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+
+  sections.forEach(s => observer.observe(s.el));
+</script>
+
+</body>
+</html>

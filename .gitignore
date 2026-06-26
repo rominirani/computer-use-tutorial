@@ -1,0 +1,40 @@
+# ── Secrets ──
+.env
+.env.*
+!.env.example
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ── IDE / Editor ──
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ── Playwright ──
+playwright-report/
+test-results/
+
+# ── Tutorial output (screenshots, reports) ──
+*.png
+*.jpg
+*.jpeg
+!assets/*.png
+research_report.md
+
+# ── Agents / Gemini workspace ──
+.agents/
+.gemini/
+computer-use-preview/
+gemini-android-computer-use-quickstart/
