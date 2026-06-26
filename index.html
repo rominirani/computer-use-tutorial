@@ -816,6 +816,7 @@ for old_turn in history[:-3]:
     <div class="step-card" id="step-1">
       <span class="step-badge">Step 1</span>
       <h3>Hello Screenshot <code>01-hello-screenshot/</code></h3>
+      <p>Before we can build an agent that <em>controls</em> a screen, we need to make sure it can <em>see</em> one. In this step, you'll launch a headless browser, navigate to Hacker News, capture a screenshot, and send it to Gemini 3.5 Flash to get a visual description. There's no Computer Use here — just the two foundational building blocks (screenshots + the model) that every subsequent step builds on.</p>
       <ul class="learn-list">
         <li>Launching a headless browser with Playwright</li>
         <li>Capturing a PNG screenshot</li>
@@ -864,13 +865,13 @@ python hello_screenshot.py</code></pre>
     <div class="step-card" id="step-2">
       <span class="step-badge">Step 2</span>
       <h3>Your First Computer Use Action <code>02-single-action/</code></h3>
+      <p>Now we give the model its "hands." You'll show Gemini a screenshot of Wikipedia's language selection page and ask it to click on the English link. The model will return a <code>function_call</code> with normalized coordinates, and you'll translate those into real pixel positions and execute the click with Playwright. This is a single round-trip — one screenshot in, one action out — but it covers the most critical concept in Computer Use: <strong>coordinate normalization</strong>.</p>
       <ul class="learn-list">
         <li>Declaring the <code>ComputerUse</code> tool</li>
         <li>Parsing the <code>function_call</code> response</li>
         <li>Denormalizing coordinates from 0–999 to pixels</li>
         <li>Executing a click with Playwright</li>
       </ul>
-      <p><strong>Key Concept:</strong> This is where Computer Use enters the picture. The critical new concept is <strong>coordinate normalization</strong>.</p>
 
       <div class="flow">
         <div class="flow-step">🧠 Model Output<br><small>x=500, y=250<br>(0-999 space)</small></div>
@@ -928,6 +929,7 @@ python single_action.py</code></pre>
     <div class="step-card" id="step-3">
       <span class="step-badge">Step 3</span>
       <h3>Building a Full Browser Agent <code>03-browser-agent/</code></h3>
+      <p>This is the big leap — going from a single action to a fully autonomous agent. You'll build a complete browser agent that can accept any task ("find the top 3 stories on Hacker News"), take screenshots, send them to the model, execute the returned actions, capture new screenshots, and loop until the task is done. Along the way, you'll tackle the real-world challenges: managing a growing conversation history, pruning old screenshots to stay within context limits, handling safety decisions, and recovering from transient API errors with exponential backoff.</p>
       <ul class="learn-list">
         <li>The complete observe-think-act agentic loop</li>
         <li>Managing conversation history with the model</li>
@@ -936,7 +938,6 @@ python single_action.py</code></pre>
         <li>Safety decision handling (human-in-the-loop)</li>
         <li>Error handling with exponential backoff retries</li>
       </ul>
-      <p><strong>Key Concept:</strong> This is the <em>big step</em> — going from a single action to a fully autonomous agent.</p>
 
       <h4>Critical Pattern: Screenshot Pruning</h4>
       <pre><code class="language-python">def _prune_old_screenshots(self) -> None:
@@ -996,6 +997,7 @@ Agent Summary: The top 3 stories on Hacker News are: ...</code></pre>
     <div class="step-card" id="step-4">
       <span class="step-badge">Step 4</span>
       <h3>Android Mobile Agent <code>04-mobile-agent/</code></h3>
+      <p>We swap the browser for a phone. In this step, you'll connect to an Android emulator via ADB, capture screenshots of the device screen, and let Gemini drive it with touch gestures — taps, swipes, and long-presses. This step also introduces the <strong>Interactions API</strong>, a stateful alternative to <code>generateContent</code> where the server manages conversation history for you. Instead of sending the full history every turn, you just chain calls with <code>previous_interaction_id</code> — making the code dramatically simpler.</p>
       <ul class="learn-list">
         <li>The <strong>Interactions API</strong> — a stateful alternative to <code>generate_content()</code></li>
         <li>Controlling Android via ADB (Android Debug Bridge)</li>
@@ -1056,6 +1058,7 @@ python mobile_agent.py "Open Settings and check the Android version"</code></pre
     <div class="step-card" id="step-5">
       <span class="step-badge">Step 5</span>
       <h3>Enterprise Platform <code>05-enterprise-platform/</code></h3>
+      <p>Everything you've built so far works with a free Gemini API key. But when you're ready for production — IAM authentication, VPC isolation, audit logging, and managed browser sandboxes — you move to Vertex AI. The remarkable part? The agent code is virtually identical. You change one line to switch from API-key auth to IAM, and optionally connect to a cloud-hosted sandbox browser instead of launching a local one. This step walks through both approaches.</p>
       <ul class="learn-list">
         <li>Authenticating via Vertex AI (IAM) instead of API keys</li>
         <li>The one-line migration from Gemini API to Vertex AI</li>
