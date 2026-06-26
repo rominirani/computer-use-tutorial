@@ -9,6 +9,40 @@ Build AI agents that can see, understand, and interact with any screen — brows
 
 ---
 
+## How Computer Use Works: Brain, Eyes, and Hands
+
+Every Computer Use agent has three parts:
+
+| Role | What It Does | Who Provides It |
+|---|---|---|
+| 🧠 **Brain** | Looks at the screen, decides what to do next, returns a structured action like `click(x=396, y=185)` | **Gemini 3.5 Flash** — this is the model |
+| 👁️ **Eyes** | Captures a screenshot of the current screen and sends it to the Brain | **Your code** — `page.screenshot()` or `adb screencap` |
+| 🖐️ **Hands** | Executes the Brain's action on the actual screen (click, type, scroll, tap) | **Playwright** (browser), **ADB** (mobile), or **CDP** (enterprise sandbox) |
+
+The Brain is always the same — Gemini 3.5 Flash. But the **Hands change** depending on what you're controlling:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    🧠 BRAIN (always the same)                   │
+│                      Gemini 3.5 Flash                           │
+│           "Look at this screenshot, what should I do?"          │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+              Model returns: click(x=396, y=185)
+                           │
+          ┌────────────────┼────────────────┐
+          ▼                ▼                ▼
+   🖐️ Browser        🖐️ Mobile       🖐️ Enterprise
+   Playwright         ADB              CDP Sandbox
+   page.mouse         adb shell        Remote browser
+   .click(506,148)    input tap        in the cloud
+                      506 148
+```
+
+**Why this matters:** The model doesn't know or care what "hands" you're using. It just sees screenshots and returns actions. You can swap Playwright for Selenium, ADB for a physical device, or a local browser for a cloud sandbox — the model's output is identical. The only thing that changes is the `environment` parameter you declare (`browser`, `mobile`, or `desktop`), which tells the model what *kind* of screen it's looking at.
+
+---
+
 ## What's Inside
 
 This repository contains **5 progressive tutorial steps** and **5 real-world use cases**, each in its own directory with a dedicated README.
